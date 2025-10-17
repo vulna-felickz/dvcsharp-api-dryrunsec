@@ -1,6 +1,11 @@
 #!/bin/bash
 
-dotnet ef database update
-dotnet watch run
+echo "Restoring NuGet packages..."
+dotnet restore
 
+echo "Updating database..."
+dotnet ef database update
+
+echo "Starting application..."
+dotnet watch run
 
