@@ -1,0 +1,69 @@
+# GitHub Copilot Workspace Configuration
+# This file defines the development environment for the Damn Vulnerable C# Application
+
+# Tasks that run when the workspace starts
+tasks:
+  - name: Setup Environment
+    before: |
+      echo "Setting up Damn Vulnerable C# Application environment..."
+      echo "This application requires Docker to build and run."
+      echo ""
+      echo "Build instructions:"
+      echo "  docker build -t appsecco/dvcsharp ."
+      echo ""
+      echo "Run instructions:"
+      echo "  docker compose up"
+      echo ""
+      echo "Note: This is a deliberately vulnerable application."
+      echo "      Do NOT deploy to production or public-facing servers!"
+
+# Development tools and their versions
+tools:
+  # Docker is required to build and run the application
+  - name: docker
+    check: docker --version
+    
+  # Docker Compose v2 is required for orchestration
+  - name: docker-compose
+    check: docker compose version
+
+# Ports that should be forwarded
+ports:
+  - name: API Server
+    port: 5000
+    description: DVCSharp API server
+
+# Environment variables
+env:
+  ASPNETCORE_URLS: "http://0.0.0.0:5000"
+
+# Documentation about the setup
+description: |
+  Damn Vulnerable C# Application (DVCSharp) - API Only
+  
+  This is a deliberately vulnerable .NET Core 2.0 application for security testing.
+  
+  ## Prerequisites
+  - Docker
+  - Docker Compose v2
+  
+  ## Building
+  ```bash
+  docker build -t appsecco/dvcsharp .
+  ```
+  
+  ## Running
+  ```bash
+  docker compose up
+  ```
+  
+  The application will:
+  1. Restore NuGet packages
+  2. Apply database migrations
+  3. Start the API server on http://localhost:5000
+  
+  ## Important Notes
+  - This application uses .NET Core 2.0 framework (netcoreapp2.0)
+  - The framework version should NOT be upgraded as this is intentionally an older, vulnerable version
+  - SSL certificate handling in the Dockerfile is configured to work with the older .NET Core 2.1 SDK
+  - Package restoration happens at container runtime to avoid SSL issues during build time
