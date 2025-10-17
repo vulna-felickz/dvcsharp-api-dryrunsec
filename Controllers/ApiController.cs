@@ -20,9 +20,10 @@ namespace VulnerableApp.Controllers
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
-                string query = "SELECT * FROM Users WHERE Username = '" + username + "'";
+                string query = "SELECT * FROM Users WHERE Username = @username";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
+                    cmd.Parameters.AddWithValue("@username", username);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
