@@ -7,7 +7,10 @@ COPY . /app
 
 WORKDIR /app
 
-RUN dotnet restore \
+RUN sed -i 's/\r$//' start.sh \
+    && chmod +x start.sh \
+    && dotnet restore \
+    && dotnet build \
     && dotnet ef database update
 
 EXPOSE 5000

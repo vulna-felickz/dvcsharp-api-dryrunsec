@@ -1,11 +1,12 @@
 using System;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VulnerableApp.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
     public class VulnerableController : ControllerBase
     {
