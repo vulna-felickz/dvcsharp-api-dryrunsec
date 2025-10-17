@@ -4,30 +4,31 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
 
 namespace VulnerableApp.Controllers
 {
     [Route("api/[controller]")]
     public class VulnerableController : ControllerBase
     {
-        private readonly string _connectionString = "Server=myServer;Database=myDB;User Id=myUser;Password=myPass;";
+        private readonly string _connectionString = "Data Source=tmp/DVCSharp.db";
         private static readonly HttpClient _httpClient = new HttpClient();
 
        
         [HttpGet("/get-user")]
         public IActionResult GetUser(string username)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
-                string query = "SELECT * FROM Users WHERE Username = '" + username + "'";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                string query = "SELECT * FROM Users WHERE name = '" + username + "'";
+                using (SqliteCommand cmd = new SqliteCommand(query, conn))
                 {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            return Ok(new { message = "User found" });
+                            return Ok(new { message = "User found", username = reader["name"] });
                         }
                     }
                 }

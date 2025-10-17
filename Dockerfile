@@ -8,11 +8,8 @@ COPY . /app
 WORKDIR /app
 
 RUN sed -i 's/\r$//' start.sh \
-    && chmod +x start.sh \
-    && dotnet restore \
-    && dotnet build \
-    && dotnet ef database update
+    && chmod +x start.sh
 
 EXPOSE 5000
 
-CMD ["dotnet", "watch", "run"]
+CMD ["bash", "-c", "dotnet restore && dotnet build && dotnet ef database update && dotnet run"]
